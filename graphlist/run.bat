@@ -1,0 +1,1 @@
+start cmd.exe /k "cd %~dp0 & cd src & gcc -c graphoplist.c & gcc -c main.c & gcc -o run.exe graphoplist.o main.o & run"

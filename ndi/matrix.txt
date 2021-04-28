@@ -1,0 +1,13 @@
+[INSERT-EDGE] Edge inserted between 1 and 5 of weight 3
+[INSERT-EDGE] Edge inserted between 3 and 2 of weight 7
+[INSERT-EDGE] Edge inserted between 3 and 5 of weight 4
+[PRINT] Node 1
+Connections: 5 (weight 3), 
+[PRINT] Node 2
+Connections: 
+[PRINT] Node 3
+Connections: 2 (weight 7), 5 (weight 4), 
+[PRINT] Node 4
+Connections: 
+[PRINT] Node 5
+Connections: 

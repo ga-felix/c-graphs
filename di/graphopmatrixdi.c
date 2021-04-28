@@ -28,7 +28,7 @@ value. */
 bool print(Graph *graph) {
 
     if(graph->nodesNumber == 0) {
-        fprintf(stderr, "[ERROR] Cannot print an empty graph\n");
+        fprintf(stderr, "[PRINT] Cannot print an empty graph\n");
         return false;
     }
 

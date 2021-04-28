@@ -1,0 +1,1 @@
+start cmd.exe /k "cd %~dp0 & gcc -c graphoplistdi.c & gcc -c mainlistdi.c & gcc -o runlistdi.exe graphoplistdi.o mainlistdi.o & gcc -c graphopmatrixdi.c & gcc -c mainmatrixdi.c & gcc -o runmatrixdi.exe graphopmatrixdi.o mainmatrixdi.o & runlistdi > runlistdi.txt & runmatrixdi > runmatrixdi.txt"

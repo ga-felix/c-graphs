@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include "graphlist.h"
 
-/* Verifies if node value can exist in graph */
+/* Verifies if node value can exist in graph O(1) */
 
 bool nodeValid(Graph *graph, int node) {
     return (graph->nodesNumber > node && 0 < node);
 }
 
-/* Initializes a new graph, setting all fields to empty default value */
+/* Initializes a new graph, setting all fields to empty default value O(n) */
 
 bool initialize(Graph* graph, int nodesNumber) {
 
@@ -24,7 +24,6 @@ bool initialize(Graph* graph, int nodesNumber) {
 
     graph->nodesNumber = nodesNumber; // Signs the number of nodes
     graph->edgesNumber = 0;
-
     return true;
 }
 
@@ -41,12 +40,12 @@ bool noNeighbors(Graph *graph, int node) {
 
 }
 
-/* Returns header from adjancecy list of node */
+/* Returns header from adjancecy list of node O(1) */
 Pointer getHeader(Graph *graph, int node) {
     return graph->nodes[node];
 }
 
-/* Returns adjacent node nodeType relative to 'adjacentNode' nodeType */
+/* Returns adjacent node nodeType relative to 'adjacentNode' nodeType O(1) */
 
 Pointer nextNeighbor(Graph *graph, int node, Pointer adjacentNode) {
     
@@ -60,8 +59,11 @@ Pointer nextNeighbor(Graph *graph, int node, Pointer adjacentNode) {
         return NULL;
     }
 
+    return adjacentNode->next;
 
 }
+
+/* Insert a new edge O(1) */
 
 void addEdge(Graph *graph, int fromNode, int toNode, Weight weight) {
 
@@ -78,15 +80,17 @@ void addEdge(Graph *graph, int fromNode, int toNode, Weight weight) {
 
     new->node = toNode;
     new->weight = weight;
-    new->next = graph->nodes[fromNode];
+    new->next = graph->nodes[fromNode]; // Inserts on head, so it's faster
     graph->nodes[fromNode] = new;
     graph->edgesNumber++;
 
 }
 
-bool isConnected(Graph *graph, int fromNode, int toNode) {
-    Pointer edge = graph->nodes[fromNode];
+/* Checks if there's an edge betweetn two given nodes O(n) */
 
+bool isConnected(Graph *graph, int fromNode, int toNode) {
+    
+    Pointer edge = graph->nodes[fromNode];
     while(edge) {
         if(edge->node == toNode) return true;
         edge = edge->next;
@@ -95,30 +99,61 @@ bool isConnected(Graph *graph, int fromNode, int toNode) {
     return false;
 }
 
+/* Removes an edge between two given nodes. O(n) */
+
 bool removeEdge(Graph *graph, int fromNode, int toNode) {
 
     if(!nodeValid(graph, fromNode) || !nodeValid(graph, toNode)) {
-        fprintf(stderr, "[ERROR] node's value out of bounds %d or %d\n", fromNode, toNode);
+        fprintf(stderr, "[REMOVE-EDGE] node's value out of bounds %d or %d\n", fromNode, toNode);
         return false;
     }
 
     Pointer edge = graph->nodes[fromNode];
     Pointer beforeEdge = graph->nodes[fromNode];
 
-    while(edge) {
-        if(edge->node == toNode) break;
+    while(edge && edge->node != toNode) {
         beforeEdge = edge;
         edge = edge->next;
     }
 
-    if(edge == graph->nodes[fromNode]) {
-
+    if(!edge) {
+        fprintf(stderr, "[REMOVE-EDGE] connection doesn't exist between %d and %d\n", fromNode, toNode);
+        return false;
     }
 
-    beforeEdge->next = edge->next;
+    if(edge == graph->nodes[fromNode]) {
+        graph->nodes[fromNode] = edge->next;
+    } else {
+        beforeEdge->next = edge->next;
+    }
+
     edge->next = NULL;
     free(edge);
     edge = NULL;
     graph->edgesNumber--;
+    return true;
 
+}
+
+/* Prints graph O(v + a) */
+
+bool print(Graph *graph) {
+
+    if(graph->nodesNumber == 0) {
+        fprintf(stderr, "[PRINT] Cannot print an empty graph\n");
+        return false;
+    }
+
+    for(int index = 1; index <= graph->nodesNumber; index++) {
+        fprintf(stdout, "[PRINT] Node %d\nConnections: ", index);
+        Pointer edge = graph->nodes[index];
+        while(edge) {
+            fprintf(stdout, "%d (weight %d), ", edge->node, edge->weight);
+            edge = edge->next;
+        }
+
+        fprintf(stdout, "\n");
+    }
+
+    return true;
 }

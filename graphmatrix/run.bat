@@ -1,1 +1,0 @@
-start cmd.exe /k "cd %~dp0 & cd src & gcc -c graphopmatrix.c & gcc -c main.c & gcc -o run.exe graphopmatrix.o main.o & run"

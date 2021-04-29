@@ -1,1 +1,1 @@
-start cmd.exe /k "cd %~dp0 & gcc -c graphoplist.c & gcc -c mainlist.c & gcc -o runlist.exe graphoplist.o mainlist.o & gcc -c graphopmatrix.c & gcc -c mainmatrix.c & gcc -o runmatrix.exe graphopmatrix.o mainmatrix.o & runlist > list.txt & runmatrix > matrix.txt"
+start cmd.exe /k "cd %~dp0 & gcc -c graphoplist.c & gcc -c mainlist.c & gcc -o runlist.exe graphoplist.o mainlist.o & gcc -c graphopmatrix.c & gcc -c mainmatrix.c & gcc -o runmatrix.exe graphopmatrix.o mainmatrix.o & runlist & runmatrix > matrix.txt"

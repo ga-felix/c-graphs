@@ -8,10 +8,13 @@ int main() {
     Graph graph;
     int verticeNumber = 5;
 
-    initialize(&graph, verticeNumber);
+    /*initialize(&graph, verticeNumber);
     Graph *pointer = &graph;
     addEdge(&graph, 3, 4, 5);
     addEdge(&graph, 3, 1, 4);
     removeEdge(&graph, 3, 1);
-    if(print(&graph)) printf("rodou");
+    print(&graph);*/
+    char* filename = "grafo.txt";
+    readGraph((char*) filename, &graph);
+    print(&graph);
 }

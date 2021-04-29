@@ -85,3 +85,5 @@ bool shortestPath(Graph* graph, int fromNode, int toNode);
 /* Finds the minimum cost path between two nodes */
 
 bool minimumPath(Graph* graph, int fromNode, int toNode);
+
+int readGraph(char* filename, Graph* graph);

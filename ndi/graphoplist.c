@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "graphlist.h"
+
 
 /* Verifies if node value can exist in graph O(1) */
 
@@ -156,4 +158,26 @@ bool print(Graph *graph) {
     }
 
     return true;
+}
+
+/* Read input from file */
+
+int readGraph(char* fileName, Graph* graph) {
+    FILE* filePointer;
+    int bufferLength = 255;
+    char buffer[bufferLength];
+
+    filePointer = fopen(fileName, "r");
+    bool first = true;
+
+    while(fgets(buffer, bufferLength, filePointer)) {
+        if(first) {
+            first = false;
+            initialize(graph, buffer[0] - '0');
+        }
+        fputs(buffer, stdout);
+    }
+
+    fclose(filePointer);
+    return 0;
 }

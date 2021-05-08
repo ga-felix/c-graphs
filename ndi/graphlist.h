@@ -1,6 +1,6 @@
 #include <stdbool.h>
 
-typedef int Weight; // Makes code less sensetive to variable typing 
+typedef float Weight; // Makes code less sensetive to variable typing 
 
 typedef int nodeType; // Makes code less sensetive to variable typing
 

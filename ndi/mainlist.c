@@ -6,7 +6,6 @@
 int main() {
 
     Graph graph;
-    int verticeNumber = 5;
 
     /*initialize(&graph, verticeNumber);
     Graph *pointer = &graph;

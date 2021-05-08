@@ -7,7 +7,7 @@
 /* Verifies if node value can exist in graph O(1) */
 
 bool nodeValid(Graph *graph, int node) {
-    return (graph->nodesNumber > node && 0 < node);
+    return (graph->nodesNumber > node && 0 <= node);
 }
 
 /* Initializes a new graph, setting all fields to empty default value O(n) */
@@ -19,7 +19,7 @@ bool initialize(Graph* graph, int nodesNumber) {
         return false;
     }
     
-    if(!(graph->nodes = (Pointer*) calloc(nodesNumber + 1, sizeof(Pointer)))) {
+    if(!(graph->nodes = (Pointer*) calloc(nodesNumber, sizeof(Pointer)))) {
         fprintf(stderr, "[ERROR] calloc operation failed: memory is full\n");
         return false;
     }
@@ -146,11 +146,11 @@ bool print(Graph *graph) {
         return false;
     }
 
-    for(int index = 1; index <= graph->nodesNumber; index++) {
+    for(int index = 0; index < graph->nodesNumber; index++) {
         fprintf(stdout, "[PRINT] Node %d\nConnections: ", index);
         Pointer edge = graph->nodes[index];
         while(edge) {
-            fprintf(stdout, "%d (weight %d), ", edge->node, edge->weight);
+            fprintf(stdout, "%d (weight %lf), ", edge->node, edge->weight);
             edge = edge->next;
         }
 
@@ -165,19 +165,26 @@ bool print(Graph *graph) {
 int readGraph(char* fileName, Graph* graph) {
     FILE* filePointer;
     int bufferLength = 255;
+    int nodes, edges;
     char buffer[bufferLength];
 
     filePointer = fopen(fileName, "r");
-    bool first = true;
+    if(!filePointer) {
+        fprintf(stderr, "[READ-GRAPH] Unable to open file");
+        return(0);
+    }
 
-    while(fgets(buffer, bufferLength, filePointer)) {
-        if(first) {
-            first = false;
-            initialize(graph, buffer[0] - '0');
-        }
-        fputs(buffer, stdout);
+    if(fscanf(filePointer, "%d %d", &nodes, &edges) != 2)
+        return (0);
+    initialize(graph, nodes);
+
+    int fromNode, toNode;
+    Weight weight;
+    while((fscanf(filePointer, "%d %d %f", &fromNode, &toNode, &weight)) != EOF) {
+        printf("fromNode value %d toNode value %d weight value %f\n", fromNode, toNode, weight);
+        addEdge(graph, fromNode, toNode, weight);
     }
 
     fclose(filePointer);
-    return 0;
+    return (1);
 }

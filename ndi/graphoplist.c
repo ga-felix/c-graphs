@@ -75,14 +75,14 @@ void addEdge(Graph *graph, int fromNode, int toNode, Weight weight) {
     }
 
     Pointer new;
-    if(!(new = (Pointer) calloc(1, sizeof(Pointer)))) {
+    if(!(new = (Pointer) calloc(1, sizeof(Edge)))) {
         fprintf(stderr, "[ERROR] calloc operation failed: memory is full\n");
         return;
     }
 
     new->node = toNode;
     new->weight = weight;
-    new->next = graph->nodes[fromNode]; // Inserts on head, so it's faster
+    new->next = graph->nodes[fromNode];
     graph->nodes[fromNode] = new;
     graph->edgesNumber++;
 
@@ -164,9 +164,7 @@ bool print(Graph *graph) {
 
 int readGraph(char* fileName, Graph* graph) {
     FILE* filePointer;
-    int bufferLength = 255;
     int nodes, edges;
-    char buffer[bufferLength];
 
     filePointer = fopen(fileName, "r");
     if(!filePointer) {
@@ -181,7 +179,6 @@ int readGraph(char* fileName, Graph* graph) {
     int fromNode, toNode;
     Weight weight;
     while((fscanf(filePointer, "%d %d %f", &fromNode, &toNode, &weight)) != EOF) {
-        printf("fromNode value %d toNode value %d weight value %f\n", fromNode, toNode, weight);
         addEdge(graph, fromNode, toNode, weight);
     }
 

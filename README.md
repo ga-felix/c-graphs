@@ -17,6 +17,8 @@ A matriz de adjacência é melhor para grafos densos, ou seja, com muitas aresta
 ## Sobre o autor
 Meu nome é Gabriel e estou disponível para contato no meu e-mail gafelix@alumni.usp.br
 
+***
+
 # Implementations of Graphs in C
 ## Overview
 Graphs are data structures that are useful for various purposes: community research, path optimization, relationship representation. In this repository, I implemented two types of graphs: directed and undirected, by adjacency matrix and linked list.

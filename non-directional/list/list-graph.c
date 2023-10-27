@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "graphlist.h"
+#include <string.h>
+#include "graph.h"
+
 
 /* Verifies if node value can exist in graph O(1) */
 
 bool nodeValid(Graph *graph, int node) {
-    return (graph->nodesNumber > node && 0 < node);
+    return (graph->nodesNumber > node && 0 <= node);
 }
 
 /* Initializes a new graph, setting all fields to empty default value O(n) */
@@ -17,7 +19,7 @@ bool initialize(Graph* graph, int nodesNumber) {
         return false;
     }
     
-    if(!(graph->nodes = (Pointer*) calloc(nodesNumber + 1, sizeof(Pointer)))) {
+    if(!(graph->nodes = (Pointer*) calloc(nodesNumber, sizeof(Pointer)))) {
         fprintf(stderr, "[ERROR] calloc operation failed: memory is full\n");
         return false;
     }
@@ -73,23 +75,15 @@ void addEdge(Graph *graph, int fromNode, int toNode, Weight weight) {
     }
 
     Pointer new;
-    Pointer otherNew;
-
-    if(!(new = (Pointer) calloc(1, sizeof(Pointer))) || !(otherNew = (Pointer) calloc(1, sizeof(Pointer)))) {
+    if(!(new = (Pointer) calloc(1, sizeof(Edge)))) {
         fprintf(stderr, "[ERROR] calloc operation failed: memory is full\n");
         return;
     }
 
     new->node = toNode;
     new->weight = weight;
-    otherNew->node = fromNode;
-    otherNew->weight = new->weight;
-
-    new->next = graph->nodes[fromNode]; // Inserts on head, so it's faster
+    new->next = graph->nodes[fromNode];
     graph->nodes[fromNode] = new;
-    otherNew->next = graph->nodes[toNode];
-    graph->nodes[toNode] = otherNew;
-
     graph->edgesNumber++;
 
 }
@@ -137,25 +131,7 @@ bool removeEdge(Graph *graph, int fromNode, int toNode) {
 
     edge->next = NULL;
     free(edge);
-
-    edge = graph->nodes[toNode];
-    beforeEdge = graph->nodes[toNode];
-
-    while(edge && edge->node != fromNode) {
-        beforeEdge = edge;
-        edge = edge->next;
-    }
-
-    if(edge == graph->nodes[toNode]) {
-        graph->nodes[toNode] = edge->next;
-    } else {
-        beforeEdge->next = edge->next;
-    }
-
-    edge->next = NULL;
-    free(edge);
     edge = NULL;
-
     graph->edgesNumber--;
     return true;
 
@@ -170,11 +146,11 @@ bool print(Graph *graph) {
         return false;
     }
 
-    for(int index = 1; index <= graph->nodesNumber; index++) {
+    for(int index = 0; index < graph->nodesNumber; index++) {
         fprintf(stdout, "[PRINT] Node %d\nConnections: ", index);
         Pointer edge = graph->nodes[index];
         while(edge) {
-            fprintf(stdout, "%d (weight %d), ", edge->node, edge->weight);
+            fprintf(stdout, "%d (weight %lf), ", edge->node, edge->weight);
             edge = edge->next;
         }
 
@@ -182,4 +158,30 @@ bool print(Graph *graph) {
     }
 
     return true;
+}
+
+/* Read input from file */
+
+int readGraph(char* fileName, Graph* graph) {
+    FILE* filePointer;
+    int nodes, edges;
+
+    filePointer = fopen(fileName, "r");
+    if(!filePointer) {
+        fprintf(stderr, "[READ-GRAPH] Unable to open file");
+        return(0);
+    }
+
+    if(fscanf(filePointer, "%d %d", &nodes, &edges) != 2)
+        return (0);
+    initialize(graph, nodes);
+
+    int fromNode, toNode;
+    Weight weight;
+    while((fscanf(filePointer, "%d %d %f", &fromNode, &toNode, &weight)) != EOF) {
+        addEdge(graph, fromNode, toNode, weight);
+    }
+
+    fclose(filePointer);
+    return (1);
 }

@@ -1,0 +1,4 @@
+gcc -c main.c
+gcc -c list-graph.c
+gcc -o program.exe main.o list-graph.o
+./program.exe

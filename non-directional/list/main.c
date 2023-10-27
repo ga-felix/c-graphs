@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "graphlist.h"
+#include "graph.h"
 
 /* Code test of graph library */
 

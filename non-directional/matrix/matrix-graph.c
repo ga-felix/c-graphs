@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "graphmatrix.h"
+#include "graph.h"
 
 #define EMPTY_NODE -1 /* Signs an empty node
 
@@ -7,7 +7,7 @@
 
 bool initialize(Graph *graph, int nodesNumber) {
 
-    if(!nodeExists(graph, nodesNumber)) {
+    if(nodesNumber <= 0) {
         fprintf(stderr, "[ERROR] nodes number is invalid %d\n", nodesNumber);
         return false;
     }
